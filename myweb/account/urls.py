@@ -10,7 +10,7 @@ app_name='account'
 urlpatterns = [
     #url(r'^login/$', views.user_login, name="user_login"),
     url(r'^login/$', LoginView.as_view(template_name='registration/login.html'), name="user_login"),
-    url(r'^newlogin/$', LoginView.as_view(template_name='account/login.html'), name="user_login"),
+    url(r'^newlogin/$', LoginView.as_view(template_name='account/login.html'), name="user_login2"),
     #url(r'^logout/$', LogoutView.as_view(), name="user_logout"),
     url(r'^logout/$', LogoutView.as_view(template_name='account/logout.html'), name="user_logout"),
     url(r'^register/$', views.register, name="user_register"),
@@ -39,4 +39,6 @@ urlpatterns = [
 
     url(r'^my-information/$', views.myself, name="my_information"),
     url(r'^edit-my-information/$', views.myself_edit, name="edit_my_information"),
+
+    url(r'^my-image/$', views.my_image, name="my_image"),
 ]
