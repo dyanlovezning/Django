@@ -1,0 +1,92 @@
+{% extends "article/base.html" %}
+{% load staticfiles %}
+{% block title %}article list{% endblock %}
+{% block content %}
+<div>
+    <table class="table table-hover">
+    <tr>
+        <td>序号</td>
+        <td>标题</td>
+        <td>栏目</td>
+        <td>操作</td>
+    </tr>
+    {% for article in articles %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></td>
+        <td>{{ article.column }}</td>
+        <td>
+            <a name="edit" href="{% url 'article:edit_article' article.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a name="delete" href="javasrcipt:" onclick="del_article(this, {{ article.id }})"><span class="glyphicon glyphicon-trash" style="margin-left:20px"></span></a>
+        </td>
+    </tr>
+    {% empty %}
+    <p> 无记录 </p>
+    {% endfor %}
+    </table>
+    {% include "paginator.html" %}
+</div>
+<script type="text/javascript" src="{% static 'js/jquery-3.4.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script>
+    function edit_article(the, article_id){
+        //svar name = $(the).parent("tr").children("td").eq(1).text();
+        var name = $(the).parents("tr").children("td").eq(1).text();
+        //var contenthtml = '<div class="text-center" style="margin-top:20px"><p>请编辑的栏目名称</p><p><input type="text" id="new_name" value="valuename"></p></div>'.replace(/valuename/, name);
+        var index = layer.open({
+            type: 1,  
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "编辑栏目",
+            //content: '<div class="text-center" style="margin-top:20px"><p>请编辑的栏目名称</p><p><input type="text" id="new_name" value="'+name+'"></p></div>',
+            //content: contenthtml,
+            content: '<div class="text-center" style="margin-top:20px"><p>请编辑栏目名称</p><p><input id="new_name" type="text" value="'+name+'"></p></div>',
+            //content: '<div class="text-center" style="margin-top:20px"><p>请编辑栏目名称</p><p><input id="new_name" type="text" ></p></div>',
+            btn: ['确定', '取消'],
+            yes: function(index, layero){
+                new_name = $("#new_name").val();
+                $.ajax({
+                    url: "{% url 'article:rename_article_column' %}",
+                    type: "POST",
+                    data: {"column_id": column_id, "column_name": new_name},
+                    success: function(e){
+                        if(e == "1"){
+                            parent.location.reload();
+                            layer.msg("good")
+                        }else{
+                            layer.msg("修改失败")
+                        }
+                    },
+                });
+            },
+        });
+    }
+
+    function del_article(the, article_id){
+        var article_name = $(the).parents("tr").children("td").eq(1).text();
+        var index = layer.open({
+            type: 1,  
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否要删除< '+article_name+' >文章</p></div>',
+            btn: ['确定', '取消'],
+            yes: function(index, layero){
+                $.ajax({
+                    url: "{% url 'article:del_article' %}",
+                    type: "POST",
+                    data: {"article_id": article_id},
+                    success: function(e){
+                        if(e == "1"){
+                            parent.location.reload();
+                            layer.msg("已删除")
+                        }else{
+                            layer.msg("删除失败")
+                        }
+                    },
+                });
+            },
+        });
+    }
+</script>
+{% endblock %}
