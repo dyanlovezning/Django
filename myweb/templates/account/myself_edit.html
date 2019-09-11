@@ -3,63 +3,63 @@
 {% block title %}my information{% endblock %}
 {% block content %}
 <div class="row text-center vertical-middle-sm">
-    <h1>Edit My Information</h1>
+    <h1>编辑个人信息</h1>
     <div class="row">
         <div class="col-md-6">
             <form class="form-horizontal" action="." method="post">
                 {% csrf_token %}
             <div class="row">
-                <div class="col-md-4 text-right"><span>用户名:</span></div>
+                <div class="col-md-4 text-right"><p>用户名:</p></div>
                 <div class="col-md-8 text-left">{{ user.username }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>邮箱:</span></div>
+                    <div class="col-md-4 text-right"><p>邮箱:</p></div>
                     <div class="col-md-8 text-left">{{ user_form.email }}</div>
            </div>
            <div class="row">
-                <div class="col-md-4 text-right"><span>生日:</span></div>
+                <div class="col-md-4 text-right"><p>生日:</p></div>
                 <div class="col-md-8 text-left">{{ userprofile_form.birth }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>电话:</span></div>
+                    <div class="col-md-4 text-right"><p>电话:</p></div>
                     <div class="col-md-8 text-left">{{ userprofile_form.phone }}</div>
             </div>    
             <div class="row">
-                    <div class="col-md-4 text-right"><span>毕业学校:</span></div>
+                    <div class="col-md-4 text-right"><p>毕业学校:</p></div>
                     <div class="col-md-8 text-left">{{ userinfo_form.school }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>公司:</span></div>
+                    <div class="col-md-4 text-right"><p>公司:</p></div>
                     <div class="col-md-8 text-left">{{ userinfo_form.company }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>职业:</span></div>
+                    <div class="col-md-4 text-right"><p>职业:</p></div>
                     <div class="col-md-8 text-left">{{ userinfo_form.profession }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>地址:</span></div>
+                    <div class="col-md-4 text-right"><p>地址:</p></div>
                     <div class="col-md-8 text-left">{{ userinfo_form.address }}</div>
             </div>
             <div class="row">
-                    <div class="col-md-4 text-right"><span>个人简介:</span></div>
+                    <div class="col-md-4 text-right"><p>个人简介:</p></div>
                     <div class="col-md-8 text-left">{{ userinfo_form.aboutme }}</div>
             </div>
             <div class="row">
-                <input type="submit" class="btn btn-primary btn-lg" value="Submit">
+                <input type="submit" class="btn btn-primary" style="margin-top: 20px; margin-bottom: 20px" value="提  交">
             </div>
         </div>
         </form>
         <div class="col-md-6">
-            <div style="margin-right:100px">
-                {% if userinfo.photo %}
-                <img src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" name="user_face">
-                {% else %}
-                <img name="user_face" src="{% static 'images/head.png' %}" class="img-circle" width='270px' id='my_photo'>
-                {% endif %}
-            </div>
-            <div style="margin-right: 100px">
-                <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload my photo</button>
-            </div>
+                <div style="margin-right:100px; margin-top: 20px; margin-bottom: 20px; border:1px solid #F60">
+                    {% if userinfo.photo %}
+                    <img src="{{ userinfo.photo | striptags }}" style="margin-bottom: 20px; margin-top: 20px" class="img-circle" id="my_photo" name="user_face">
+                    {% else %}
+                    <img name="user_face" src="{% static 'images/head.png' %}" style="margin-bottom: 20px; margin-top: 20px" class="img-circle" width='270px' id='my_photo'>
+                    {% endif %}
+                </div>
+                <div style="margin-right: 100px">
+                    <button class="btn btn-primary" style="margin-bottom: 20px; margin-top: 10px" id="upload_image" onclick="upload_image_layer()">上传照片</button>
+                </div>
         </div>
     </div>
 </div>
