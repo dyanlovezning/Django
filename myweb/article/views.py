@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
@@ -97,6 +98,7 @@ def article_list(request):
         articless = current_page.object_list
     return render(request, 'article/column/article_list.html', {'articles': articless, 'page': current_page})
 
+
 @login_required(login_url='/account/login')
 def article_detail(request, id, slug):
     article = get_object_or_404(ArticlePost, id=id, slug=slug)
@@ -136,4 +138,33 @@ def edit_article(request, article_id):
             return HttpResponse("1")
         except:
             return HttpResponse("2")
+
+
+def article_titles(request, username=None):
+    #print(request.session.items())
+    if username:
+        user = User.objects.get(username=username)
+        articles_title = ArticlePost.objects.filter(author=user)
+        try:
+            userinfo = user.userinfo
+        except:
+            userinfo = None
+    else:
+        articles_title = ArticlePost.objects.all()
+    paginator = Paginator(articles_title, 5)
+    page = request.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+        articles = current_page.object_list
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+        articles = current_page.object_list
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+        articles = current_page.object_list
+    
+    if username:
+        return render(request, 'article/list/author_articles.html', {'articles': articles, 'page': current_page, 'userinfo':userinfo, 'user':user})
+    else:
+        return render(request, 'article/list/list_article_titles.html', {'articles': articles, 'page': current_page})
 

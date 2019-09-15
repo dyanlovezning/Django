@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'account/', include(('account.urls', 'account'), namespace='account')),
     url(r'pwd-reset/', include(('password_reset.urls', 'password_reset'), namespace='password_reset')),
     url(r'article/', include(('article.urls', 'article'), namespace='article')),
+    url(r'home/', TemplateView.as_view(template_name='home.html'), name='home'),
 ]
