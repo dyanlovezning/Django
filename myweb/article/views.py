@@ -86,6 +86,7 @@ def article_post(request):
 def article_list(request):
     articles = ArticlePost.objects.filter(author=request.user).order_by("-created")
     paginator = Paginator(articles, 5)
+    num_pages = [i for i in range(1,paginator.num_pages+1)]
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -96,7 +97,7 @@ def article_list(request):
     except EmptyPage:
         current_page = paginator.page(paginator.num_pages)
         articless = current_page.object_list
-    return render(request, 'article/column/article_list.html', {'articles': articless, 'page': current_page})
+    return render(request, 'article/column/article_list.html', {'articles': articless, 'page': current_page, 'num_pages':num_pages})
 
 
 @login_required(login_url='/account/login')
@@ -144,14 +145,16 @@ def article_titles(request, username=None):
     #print(request.session.items())
     if username:
         user = User.objects.get(username=username)
-        articles_title = ArticlePost.objects.filter(author=user)
+        articles_title = ArticlePost.objects.filter(author=user).order_by('title')
         try:
             userinfo = user.userinfo
         except:
             userinfo = None
     else:
-        articles_title = ArticlePost.objects.all()
+        articles_title = ArticlePost.objects.all().order_by('title')
     paginator = Paginator(articles_title, 5)
+    #print(type(paginator.num_pages))
+    num_pages = [i for i in range(1,paginator.num_pages+1)]
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -164,7 +167,7 @@ def article_titles(request, username=None):
         articles = current_page.object_list
     
     if username:
-        return render(request, 'article/list/author_articles.html', {'articles': articles, 'page': current_page, 'userinfo':userinfo, 'user':user})
+        return render(request, 'article/list/author_articles.html', {'articles': articles, 'page': current_page, 'num_pages':num_pages, 'userinfo':userinfo, 'user':user})
     else:
-        return render(request, 'article/list/list_article_titles.html', {'articles': articles, 'page': current_page})
+        return render(request, 'article/list/list_article_titles.html', {'articles': articles, 'page': current_page, 'num_pages':num_pages})
 
