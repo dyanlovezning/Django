@@ -1,11 +1,11 @@
-{% extends "article/base.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
 {% block title %}articles list{% endblock %}
 {% block content %} 
-<div>
+<div class="container">
     <header>
-        <h1 style="text-align: center">{{ article.title }}</h1> 
-        <p style="text-align: center">{{ user.username }}</p>
+        <h1>{{ article.title }}</h1> 
+        <p><a href="{% url 'article:author_articles' article.author.username %}">{{ article.author.username }}</a></p>
     </header>
     
     <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.css' %}" /> 

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
-from . import views
+from . import views, list_views
 from django.conf import settings
 from django.urls import reverse_lazy, path
 
@@ -19,4 +19,9 @@ urlpatterns = [
     url(r'^delete-article/$', views.del_article, name='del_article'),
     #url(r'^edit-article/(?P<article_id>\d+)/$', views.edit_article, name="edit_article"),
     path('edit-article/<int:article_id>/', views.edit_article, name="edit_article"),
+
+    url(r'^list-article-titles/$', views.article_titles, name='article_titles'),
+    url(r'^list-article-detail/(?P<id>\d+)/(?P<slug>[-\w]+)$', list_views.article_detail, name='list_article_detail'),
+    url(r'^list-article-titles/(?P<username>[-\w]+)$', views.article_titles, name='author_articles'),
+    url(r'^like-article/$', list_views.like_article, name='like_article'),
 ]

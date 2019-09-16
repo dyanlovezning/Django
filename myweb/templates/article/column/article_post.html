@@ -7,18 +7,12 @@
 <div style="margin-left: 10px">
     <form class="form-horizontal" action="." method="post">
         {% csrf_token %}
-<<<<<<< HEAD
-        <div class="form-group-lg" style="margin-top: 10px">
-            <div class="col-md-1 text-right"><span>标题：</span></div>
-            <div class="col-md-11 text-left">{{ article_post_form.title }}</div>
-=======
         <div class="row" style="margin-top: 10px">
             <div class="col-md-1 text-right"><span>标题：</span></div>
             <!--<div class="col-md-10 text-left">{{ article_post_form.title }}</div> -->
             <div class="col-md-11 text-left">
                 <input class="form-control" placeholder="请输入标题" type="{{article_post_form.title.field.widget.input_type}}" name="{{article_post_form.title.html_name}}" id="{{article_post_form.title.id_for_label}}">
             </div>
->>>>>>> 8ede8120cfbe3e68d609f7aa1892a8ac386cd4e3
         </div>
 
         <div class="row" style="margin-top: 10px">

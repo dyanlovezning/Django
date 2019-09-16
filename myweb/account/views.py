@@ -16,15 +16,22 @@ def user_login(request):
             user = authenticate(username=cd['username'], password=cd['password'])
             if user:
                 login(request, user)
-                return HttpResponse("Wellcome, you have been authenticated successfully")
+                return HttpResponseRedirect('/home/')#HttpResponse("Wellcome, you have been authenticated successfully")
             else:
                 return HttpResponse("Sorry, Your username or password is not right")
         else:
             return HttpResponse("Invalid login")
 
     if request.method == "GET":
-        login_form = LoginForm()
-        return render(request, "account/login.html", {"form": login_form})
+        #username = request.session.get('user', '')
+        #print(dir(request.session))
+        print(request.session.items())
+        useritem = request.session.items()
+        if len(useritem) > 0:
+            return  HttpResponseRedirect('/home/')#render(request, "account/login.html", {"form": login_form})
+        else:
+            login_form = LoginForm()
+            return render(request, "account/login.html", {"form": login_form})
 
 
 def register(request):
@@ -39,7 +46,7 @@ def register(request):
             new_profile.user = new_user
             new_profile.save()
             UserInfo.objects.create(user=new_user)
-            return HttpResponse("Successfully")
+            return  HttpResponseRedirect('/home/')
         else:
             return HttpResponse("sorry, your can not register")
     else:
